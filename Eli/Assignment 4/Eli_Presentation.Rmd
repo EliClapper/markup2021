@@ -1,0 +1,100 @@
+---
+title: "Presentation Eli"
+author: "Eli Clapper"
+date: "24/11/2021"
+output: 
+  ioslides_presentation:
+    logo: DonaldDuck.png
+    
+bibliography: bibliography.bib
+---
+## used packages
+```{r libraries}
+library(DT)
+```
+
+
+
+## Centered still figure
+<div class = "centered">
+<img src = "Goofy.png" alt = "Wie dit leest is een gekkie">
+</div>
+
+## An interactive table
+```{r disneytable, echo=FALSE}
+characters <- c('Donald', 'Goofy', 'Mickey', 'Minnie', 'Kwik', 'Kwek', 'Kwak', 'Dagobert', 'Magica',
+                'Katrien','Bolderbast', 'Hiawatha', 'Pluto', 'Walt Disney')
+age <- c(40, 45, 70, 67, 15, 15, 15, 90, 120, 42, 46, 12, 8, 36)
+conservatism <- c(7, 2, 10, 4, 2, 2, 2, 9, 1, 4, 5, 1, 0, 10)
+happiness <- c(34, 12, 45, 39, 36, 36, 36, 50, 30, 43, 23, 42, 49, 10)
+
+df <- data.frame(cbind(characters,age,conservatism,happiness))
+datatable(df, options = list(pageLength = 4))
+
+```
+
+## a moving figure
+<marquee direction = "down">
+<img src = "Goofy.png" alt = "Wie dit leest is een gekkie">
+</marquee>
+
+## 2 columns slide
+<div class="columns-2">
+  ![](Goofy.png)
+
+  - Liberal
+  - Has accepted the undeniable meaningless void of life
+  - Works in a slaughterhouse
+</div>
+
+## aligned multirow equation
+$$
+\begin{align}
+    RSS_i &= \sum_{i=1}^{n}(y_{i} - \beta_{0} - \sum_{j=1}^{p}\beta_{j}x_{ij})^2 \\
+    &= \sum_{i=1}^{n}\epsilon_i^2
+\end{align}
+$$
+
+## citation and reference list
+Used references: [@byrne1999deconstructing; @zipes1995breaking].
+
+*Reference list:*
+
+<div id="refs">
+</div>
+
+
+## rcode displayed, but not executed
+```{r NotEvaluated, eval=FALSE}
+set.seed(6164900)
+colMeans(replicate(50, rnorm(10, 5, 10)))
+```
+
+## Cached r code, not displayed
+We obtain the Root Mean Squared Error for predicting conservatism based on age and happiness by a 3-fold cross-validation approach in the Disney Universe. The results are:
+```{r CahcedNoDisplay, cache=TRUE, echo=FALSE}
+k <- 3
+ind <- rep(c(1:k), length.out = nrow(df))
+
+set.seed(6164900)
+df$ind <- sample(ind, nrow(df))
+
+df[, 2:4] <- sapply(df[, 2:4], as.numeric)
+
+RMSE <- c()
+for(i in 1:k){
+  train <- df[df$ind != i,]
+  test <- df[df$ind == i,]
+  
+  fit.lm <- lm(conservatism ~ age + happiness, data = train)
+  pred <- predict(fit.lm, newdata = test)
+  RMSE <- append(RMSE, (mean(sqrt((test$conservatism - pred)^2))))
+  rm(train,test,fit.lm,pred)
+}
+
+print(list(RMSE = RMSE))
+
+```
+It seems that we do a pretty bad job since conservatism is measured on a scale from 1-10.
+This is likely due to the low sample size and the fact that the data is complete nonsense.
+
