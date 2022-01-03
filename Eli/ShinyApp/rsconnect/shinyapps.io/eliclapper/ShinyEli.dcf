@@ -1,0 +1,13 @@
+name: ShinyEli
+title: ShinyEli
+username:
+account: eliclapper
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5389096
+bundleId: 5429475
+url: https://eliclapper.shinyapps.io/ShinyEli/
+when: 1641216393.7303
+lastSyncTime: 1641216393.7303
+asMultiple: FALSE
+asStatic: FALSE
